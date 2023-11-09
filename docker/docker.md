@@ -40,6 +40,8 @@ docker container run --rm -d \
 
   - Example: `docker container run --rm -d -p 8080:8080 example/docker-node-hello:latest`
 
+- You can verify images available by `docker image ls`.
+
 - You can verify containers running by `docker container ls`.
 
 - You inspect a image with `docker image inspect <image-name>`.
@@ -66,6 +68,31 @@ docker image tag example/docker-node-hello:latest \
 - You can also use the `docker search` command to find images that might be useful.
 
   - Example: `docker search node`
+
+- You can then use the container ID to export the files in the container into a tarball.
+
+  - Example: `docker container export <container-id> -o web-app.tar`
+
+- There is a way you can constrain containers to an even smaller size in many cases: **multistage builds**. This is how we recommend that you build most production containers. You don’t have to worry as much about bringing in extra resources to build your application, and you can still run a lean production container. Multistage containers also encourage doing builds inside Docker, which is a great pattern for repeatability in your build system.
+
+  - Example: [multi-stage.dockerfile](./multi-stage.dockerfile)
+
+> ["Ship artifacts, not build environments."](https://medium.com/@adriaandejonge/simplify-the-smallest-possible-docker-image-62c0e0d342ef)
+
+- You can define a specific Dockerfile by using flag `-f`
+
+  - Example : `docker image build -f multi-stage.dockerfile .`
+
+- You can see the history of an image with `docker image history <image-name>` command.
+
+- An important thing to understand is that image layers are strictly additive in nature. Once a layer is created, nothing can be removed from it. This means that you cannot make earlier layers in an image smaller by deleting files in subsequent layers. When you delete or edit files in subsequent layers, you’re simply masking the older version with the modified or removed version in the new layer. This means that the only way you can make a layer smaller is by removing files before you save the layer. The most common way to deal with this is by stringing commands together on a single `Dockerfile` line. You can do this very easily by taking advantage of the `&&` operator. This operator acts as a Boolean `AND` statement and basically translates into English as “and if the previous command ran successfully, run this command.” In addition to this, you can take advantage of the `\` operator, which is used to indicate that a command continues after the newline. This can help improve the readability of long commands.
+
+```Dockerfile
+FROM docker.io/fedora
+RUN dnf install -y httpd && \
+    dnf clean all
+CMD ["/usr/sbin/httpd", "-DFOREGROUND"]
+```
 
 ## Reference
 
