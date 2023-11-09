@@ -7,6 +7,7 @@
 - The `ARG` parameter provides a way for you to set variables and their default values, which are only available during the image build process. You can provide a new value for the `ARG` via the `--build-arg` command-line argument to `docker image build`
 
   - Example:
+
     ```shell
     docker image build --build-arg email=dercilio@example.com \
         -t example/docker-node-hello:latest .
@@ -15,6 +16,7 @@
 - Unlike the `ARG` instruction, the `ENV` instruction allows you to set shell variables that can be used by your running application for configuration, in addition to being available during the build process. You also add environment variable with `--env` argument to`docker container run` command.
 
   - Example:
+
     ```shell
     docker container run --rm -d \
       --publish mode=ingress,published=8080,target=8080 \
@@ -48,6 +50,6 @@
 
 - You can stop the running container by typing `docker container stop <container-id>`
 
-## Reference:
+## Reference
 
 - [“Docker: Up & Running, 3e, by Sean P. Kane with Karl Matthias (O’Reilly). Copyright 2023 Sean P. Kane and Karl Matthias, 978-1-098-13182-1.”](https://learning.oreilly.com/library/view/docker-up/9781098131814/)
