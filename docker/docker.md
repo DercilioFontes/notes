@@ -10,7 +10,7 @@
     ```shell
     docker image build --build-arg email=dercilio@example.com \
         -t example/docker-node-hello:latest .
-    ``` 
+    ```
 
 - Unlike the `ARG` instruction, the `ENV` instruction allows you to set shell variables that can be used by your running application for configuration, in addition to being available during the build process. You also add environment variable with `--env` argument to`docker container run` command.
 
@@ -20,7 +20,7 @@
       --publish mode=ingress,published=8080,target=8080 \
       --env WHO="Mike Ross" \
       example/docker-node-hello:latest
-    ``` 
+    ```
 
 - Applying labels (`LABEL`) to images and containers allows you to add metadata via key/value pairs that can later be used to search for and identify Docker images and containers. You can see the labels applied to any image using the `docker image inspect` command.
 
