@@ -8,8 +8,7 @@
 
   - Example:
 
-```bash
-#!/bin/bash
+```fish
 docker image build --build-arg email=dercilio@example.com \
     -t example/docker-node-hello:latest .
 ```
@@ -18,8 +17,7 @@ docker image build --build-arg email=dercilio@example.com \
 
   - Example:
 
-```bash
-#!/bin/bash
+```fish
 docker container run --rm -d \
   --publish mode=ingress,published=8080,target=8080 \
   --env WHO="Mike Ross" \
