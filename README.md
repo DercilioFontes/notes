@@ -1,9 +1,11 @@
 # notes
 
-## [docker](./docker/docker.md)
+## [Docker](./docker/docker.md)
 
-## [markdown](./markdown/markdown.md)
+## [Markdown](./markdown/markdown.md)
 
 ## cli
 
-- [apps](./cli/apps.md)
+- [Apps](./cli/apps.md)
+
+## [VS Code](./vscode/vscode.md)
