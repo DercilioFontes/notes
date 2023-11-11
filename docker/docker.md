@@ -4,6 +4,8 @@
 
 - Docker server: `dockerd` command.
 
+- Dockerfile: [reference](https://docs.docker.com/engine/reference/builder/)
+
 - The `ARG` parameter provides a way for you to set variables and their default values, which are only available during the image build process. You can provide a new value for the `ARG` via the `--build-arg` command-line argument to `docker image build`.
 
 ```fish
@@ -93,6 +95,8 @@ RUN dnf install -y httpd && \
     dnf clean all
 CMD ["/usr/sbin/httpd", "-DFOREGROUND"]
 ```
+
+- A important lesson to take is that order matters, and in general, you should always try to order your Dockerfile so that the most stable and time-consuming portions of your build process happen first and your code is added as late in the process as possible.
 
 ## Reference
 
