@@ -48,7 +48,7 @@ docker container run --rm -d \
 
 - You inspect a image with `docker image inspect <image-name>`.
 
-- You can stop the running container by typing `docker container stop <container-id>`.
+- You can stop the running container by typing `docker container stop <container-name/id>`.
 
 - Log in to the Docker Hub registry with `docker login`.
 
@@ -73,7 +73,7 @@ docker image tag example/docker-node-hello:latest \
 
 - You can then use the container ID to export the files in the container into a tarball.
 
-  - Example: `docker container export <container-id> -o web-app.tar`
+  - Example: `docker container export <container-name/id> -o web-app.tar`
 
 - There is a way you can constrain containers to an even smaller size in many cases: **multistage builds**. This is how we recommend that you build most production containers. You don’t have to worry as much about bringing in extra resources to build your application, and you can still run a lean production container. Multistage containers also encourage doing builds inside Docker, which is a great pattern for repeatability in your build system.
 
@@ -97,6 +97,64 @@ CMD ["/usr/sbin/httpd", "-DFOREGROUND"]
 ```
 
 - A important lesson to take is that order matters, and in general, you should always try to order your Dockerfile so that the most stable and time-consuming portions of your build process happen first and your code is added as late in the process as possible.
+
+- Create a container from the underlying image with `docker container create` command.
+
+- Execute the container with `docker container start` command.
+
+- The `docker container run` is really a convenience command that wraps the two separate steps above into one.
+
+- If you want to give your container a specific name, you can use the `--name` argument.
+
+  - Example: `docker container create --name="awesome-service" ubuntu:latest sleep 120`
+
+- You can delete a container with `docker container rm <container-name/id>` command.
+
+- It is possible to add new labels to the containers so that you can apply metadata that might be specific to that single container:
+
+```fish
+docker container run --rm -d --name has-some-labels \
+  -l deployer=Mike -l tester=Harvey \
+  ubuntu:latest sleep 1000
+```
+
+- You can then search for and filter containers based on this metadata, using commands like `docker container ls`:
+
+  - Example: `docker container ls -a -f label=deployer=Dercilio`
+
+- You can use the `docker container inspect` command to see all the labels that a container has.
+
+- The `--rm` argument tells Docker to delete the container when it exits.
+
+- The `-t` argument tells Docker to allocate a pseudo-TTY.
+
+> TTY stands for Teletype and can be interpreted as a device that offers basic input-output. The reason it’s a pseudo-TTY is that there’s no physical teletype needed, and it’s emulated using a combination of display driver and keyboard driver. [ref](https://www.baeldung.com/linux/docker-run-interactive-tty-options#:~:text=From%20the%20official%20documentation%2C%20Docker,that%20offers%20basic%20input%2Doutput.)
+
+- The `-i` argument tells Docker that this is going to be an interactive session and that we want to keep STDIN open.
+
+  - Exmaple: `docker container run --rm -ti ubuntu:latest /bin/bash`
+
+- When you see any examples with a prompt that looks something like `root@hashID`, it means that you are running a command within the container instead of on the local host.
+
+- Constraints are normally applied at the time of container creation. If you need to change them, you can use the `docker container update` command or deploy a new container with the adjustments.
+
+- To see your kernel info, run `docker system info`
+
+- When you use the `--memory` option alone, you are setting both the amount of RAM and the amount of swap that the container will have access to. Docker supports `b`, `k`, `m`, or `g`, representing bytes, kilobytes, megabytes, or gigabytes, respectively. If you would like to set the swap separately or disable it altogether, you need to also use the `--memory-swap` option.
+
+  - Example: `docker container run --rm -ti --memory 512m --memory-swap=768m`
+
+  - We’re telling the kernel that this container can have access to 512 MB of memory and 256 MB of additional swap space.
+
+- We could use the container long hash, but if we failed to note it down, we can also list all the containers on the system and filter by it ancestor:
+
+  - Exmaple: `docker container ls -a --filter ancestor=redis:2.8`
+
+- Most Docker commands will work with the container name, the full hash, the short hash, or even just enough of the hash to make it unique.
+
+- We can tell Docker to manage restarts on our behalf by passing the `--restart` argument to the `docker container run` command. It takes four values: `no`, `always`, `on-failure`, or `unless-stopped`.
+
+- If you need to prevent a container from doing any additional work, without actually stopping the process, then you can pause the Linux container with `docker container pause` and `unpause`.
 
 ## Reference
 
