@@ -8,4 +8,6 @@
 
 - [Apps](./cli/apps.md)
 
+- [Commands](./cli/cmd.md)
+
 ## [VS Code](./vscode/vscode.md)
